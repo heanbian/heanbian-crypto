@@ -3,12 +3,11 @@
 
 1.maven依赖
 
-
 <dependencies>
 
-	<dependency>  
-		<groupId>com.heanbian</groupId>  
-		<artifactId>heanbian-crypto</artifactId>  
-		<version>3.0.0</version>  
-	</dependency>  
-</dependencies>  
+	<dependency>
+		<groupId>com.heanbian</groupId>
+		<artifactId>heanbian-crypto</artifactId>
+		<version>4.0.0</version>
+	</dependency>
+</dependencies> 
