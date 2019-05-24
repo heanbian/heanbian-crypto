@@ -15,31 +15,31 @@ import javax.crypto.spec.SecretKeySpec;
  * @since 1.0
  * @version 1.0
  */
-public enum HeanbianCrypt {
+public enum HCryptTemplate {
 
 	INSTANCE;
 
 	/**
 	 * 算法：AES
 	 */
-	private final String ALGORITHM = "AES";
+	private static final String ALGORITHM = "AES";
 
 	/**
 	 * 向量：1234567890abcdef
 	 */
-	private final String DEFAULT_IV = "1234567890abcdef";
+	private static final String DEFAULT_IV = "1234567890abcdef";
 
 	/**
 	 * 默认密钥：1234567890abcdef
 	 */
-	private final String DEFAULT_KEY = "1234567890abcdef";
+	private static final String DEFAULT_KEY = "1234567890abcdef";
 
 	/**
 	 * AES/CBC/PKCS5Padding
 	 */
-	private final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
+	private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
 
-	private HeanbianCrypt() {
+	private HCryptTemplate() {
 	}
 
 	/**
