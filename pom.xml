@@ -27,6 +27,9 @@
 			<email>heanbian@heanbian.com</email>
 			<organization>heanbian.com</organization>
 			<organizationUrl>http://www.heanbian.com</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
 		</developer>
 	</developers>
 
