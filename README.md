@@ -4,10 +4,10 @@
 1.pom.xml
 ```
 <dependencies>
- <dependency>
+	<dependency>
 		<groupId>com.heanbian</groupId>
 		<artifactId>heanbian-crypto</artifactId>
-		<version>4.0.0</version>
+		<version>${version}</version>
 	</dependency>
 </dependencies>
 ```
