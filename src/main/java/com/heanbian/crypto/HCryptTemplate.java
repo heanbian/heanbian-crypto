@@ -15,9 +15,9 @@ import javax.crypto.spec.SecretKeySpec;
  * @since 1.0
  * @version 1.0
  */
-public enum HCryptTemplate {
+public class HCryptTemplate {
 
-	INSTANCE;
+	public static final HCryptTemplate INSTANCE = new HCryptTemplate();
 
 	/**
 	 * 算法：AES
