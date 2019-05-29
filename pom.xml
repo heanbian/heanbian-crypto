@@ -38,11 +38,9 @@
 		<connection>scm:git:https://github.com/heanbian/heanbian-crypto.git</connection>
 		<developerConnection>scm:git:https://github.com/heanbian/heanbian-crypto.git</developerConnection>
 		<url>https://github.com/heanbian/heanbian-crypto</url>
-		<tag>master</tag>
 	</scm>
 
 	<properties>
-		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 </project>
