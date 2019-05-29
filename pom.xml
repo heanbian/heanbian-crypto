@@ -40,6 +40,11 @@
 		<url>https://github.com/heanbian/heanbian-crypto</url>
 	</scm>
 
+	<issueManagement>
+		<system>Github</system>
+		<url>https://github.com/heanbian/heanbian-crypto/issues</url>
+	</issueManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
