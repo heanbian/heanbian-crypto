@@ -2,7 +2,7 @@ package com.heanbian.crypto;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Optional;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -72,16 +72,21 @@ public class HCryptTemplate {
 	 * @param secretKey 密钥，长度16位
 	 * @param iv        向量，长度16位
 	 * @return 密文
-	 * @throws Exception 异常
 	 */
-	public String encrypt(String plaintext, String secretKey, String iv) throws Exception {
-		String opt = Optional.ofNullable(plaintext).orElse("");
-		String key = Optional.ofNullable(secretKey).orElse(DEFAULT_KEY);
-		String _iv = Optional.ofNullable(iv).orElse(DEFAULT_IV);
-		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-		cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), ALGORITHM),
-				new IvParameterSpec(_iv.getBytes()));
-		return Base64.getEncoder().encodeToString(cipher.doFinal(opt.getBytes(StandardCharsets.UTF_8)));
+	public String encrypt(String plaintext, String secretKey, String iv) {
+		Objects.requireNonNull(plaintext, "plaintext must not be null");
+		Objects.requireNonNull(secretKey, "secretKey must not be null");
+		Objects.requireNonNull(iv, "iv must not be null");
+
+		try {
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
+					new IvParameterSpec(iv.getBytes()));
+			return Base64.getEncoder().encodeToString(cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
@@ -114,17 +119,22 @@ public class HCryptTemplate {
 	 * @param secretKey  密钥，长度16位
 	 * @param iv         向量，长度16位
 	 * @return 明文
-	 * @throws Exception 异常
 	 */
-	public String decrypt(String ciphertext, String secretKey, String iv) throws Exception {
-		String opt = Optional.ofNullable(ciphertext).orElse("");
-		opt = opt.replaceAll(" ", "+");
-		String key = Optional.ofNullable(secretKey).orElse(DEFAULT_KEY);
-		String _iv = Optional.ofNullable(iv).orElse(DEFAULT_IV);
-		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-		cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), ALGORITHM),
-				new IvParameterSpec(_iv.getBytes()));
-		return new String(cipher.doFinal(Base64.getDecoder().decode(opt)), StandardCharsets.UTF_8);
+	public String decrypt(String ciphertext, String secretKey, String iv) {
+		Objects.requireNonNull(ciphertext, "ciphertext must not be null");
+		Objects.requireNonNull(secretKey, "secretKey must not be null");
+		Objects.requireNonNull(iv, "iv must not be null");
+
+		try {
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
+					new IvParameterSpec(iv.getBytes()));
+			return new String(cipher.doFinal(Base64.getDecoder().decode(ciphertext.replaceAll(" ", "+"))),
+					StandardCharsets.UTF_8);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
