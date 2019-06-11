@@ -72,21 +72,17 @@ public class HCryptTemplate {
 	 * @param secretKey 密钥，长度16位
 	 * @param iv        向量，长度16位
 	 * @return 密文
+	 * @throws Exception 异常
 	 */
-	public String encrypt(String plaintext, String secretKey, String iv) {
+	public String encrypt(String plaintext, String secretKey, String iv) throws Exception {
 		Objects.requireNonNull(plaintext, "plaintext must not be null");
 		Objects.requireNonNull(secretKey, "secretKey must not be null");
 		Objects.requireNonNull(iv, "iv must not be null");
 
-		try {
-			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
-					new IvParameterSpec(iv.getBytes()));
-			return Base64.getEncoder().encodeToString(cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8)));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+		cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
+				new IvParameterSpec(iv.getBytes()));
+		return Base64.getEncoder().encodeToString(cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8)));
 	}
 
 	/**
@@ -119,22 +115,18 @@ public class HCryptTemplate {
 	 * @param secretKey  密钥，长度16位
 	 * @param iv         向量，长度16位
 	 * @return 明文
+	 * @throws Exception 异常
 	 */
-	public String decrypt(String ciphertext, String secretKey, String iv) {
+	public String decrypt(String ciphertext, String secretKey, String iv) throws Exception {
 		Objects.requireNonNull(ciphertext, "ciphertext must not be null");
 		Objects.requireNonNull(secretKey, "secretKey must not be null");
 		Objects.requireNonNull(iv, "iv must not be null");
 
-		try {
-			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
-					new IvParameterSpec(iv.getBytes()));
-			return new String(cipher.doFinal(Base64.getDecoder().decode(ciphertext.replaceAll(" ", "+"))),
-					StandardCharsets.UTF_8);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+		cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
+				new IvParameterSpec(iv.getBytes()));
+		return new String(cipher.doFinal(Base64.getDecoder().decode(ciphertext.replaceAll(" ", "+"))),
+				StandardCharsets.UTF_8);
 	}
 
 }
