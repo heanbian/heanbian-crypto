@@ -11,7 +11,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * 加密解密类
  * 
- * @author heanbian@heanbian.com
+ * @author 河岸边
  * @since 1.0
  * @version 1.0
  */
@@ -45,9 +45,8 @@ public final class HCryptTemplate {
 	 * 
 	 * @param plaintext 明文
 	 * @return 密文
-	 * @throws Exception 异常
 	 */
-	public static String encrypt(String plaintext) throws Exception {
+	public static String encrypt(String plaintext) {
 		return encrypt(plaintext, DEFAULT_KEY);
 	}
 
@@ -57,9 +56,8 @@ public final class HCryptTemplate {
 	 * @param plaintext 明文
 	 * @param secretKey 密钥，长度16位
 	 * @return 密文
-	 * @throws Exception 异常
 	 */
-	public static String encrypt(String plaintext, String secretKey) throws Exception {
+	public static String encrypt(String plaintext, String secretKey) {
 		return encrypt(plaintext, secretKey, DEFAULT_IV);
 	}
 
@@ -70,17 +68,20 @@ public final class HCryptTemplate {
 	 * @param secretKey 密钥，长度16位
 	 * @param iv        向量，长度16位
 	 * @return 密文
-	 * @throws Exception 异常
 	 */
-	public static String encrypt(String plaintext, String secretKey, String iv) throws Exception {
+	public static String encrypt(String plaintext, String secretKey, String iv) {
 		Objects.requireNonNull(plaintext, "plaintext must not be null");
 		Objects.requireNonNull(secretKey, "secretKey must not be null");
 		Objects.requireNonNull(iv, "iv must not be null");
 
-		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-		cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
-				new IvParameterSpec(iv.getBytes()));
-		return Base64.getEncoder().encodeToString(cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8)));
+		try {
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
+					new IvParameterSpec(iv.getBytes()));
+			return Base64.getEncoder().encodeToString(cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8)));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -88,9 +89,8 @@ public final class HCryptTemplate {
 	 * 
 	 * @param ciphertext 密文
 	 * @return 明文
-	 * @throws Exception 异常
 	 */
-	public static String decrypt(String ciphertext) throws Exception {
+	public static String decrypt(String ciphertext) {
 		return decrypt(ciphertext, DEFAULT_KEY);
 	}
 
@@ -100,9 +100,8 @@ public final class HCryptTemplate {
 	 * @param ciphertext 密文
 	 * @param secretKey  密钥，长度16位
 	 * @return 明文
-	 * @throws Exception 异常
 	 */
-	public static String decrypt(String ciphertext, String secretKey) throws Exception {
+	public static String decrypt(String ciphertext, String secretKey) {
 		return decrypt(ciphertext, secretKey, DEFAULT_IV);
 	}
 
@@ -113,18 +112,21 @@ public final class HCryptTemplate {
 	 * @param secretKey  密钥，长度16位
 	 * @param iv         向量，长度16位
 	 * @return 明文
-	 * @throws Exception 异常
 	 */
-	public static String decrypt(String ciphertext, String secretKey, String iv) throws Exception {
+	public static String decrypt(String ciphertext, String secretKey, String iv) {
 		Objects.requireNonNull(ciphertext, "ciphertext must not be null");
 		Objects.requireNonNull(secretKey, "secretKey must not be null");
 		Objects.requireNonNull(iv, "iv must not be null");
 
-		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-		cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
-				new IvParameterSpec(iv.getBytes()));
-		return new String(cipher.doFinal(Base64.getDecoder().decode(ciphertext.replaceAll(" ", "+"))),
-				StandardCharsets.UTF_8);
+		try {
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
+					new IvParameterSpec(iv.getBytes()));
+			return new String(cipher.doFinal(Base64.getDecoder().decode(ciphertext.replaceAll(" ", "+"))),
+					StandardCharsets.UTF_8);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

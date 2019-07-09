@@ -14,32 +14,40 @@ public final class HSimpleCryptTemplate {
 	private HSimpleCryptTemplate() {
 	}
 
-	public static String encrypt(String data) throws Exception {
+	public static String encrypt(String data) {
 		return encrypt(data, DEFAULT_KEY);
 	}
 
-	public static String decrypt(String data) throws Exception {
+	public static String decrypt(String data) {
 		return decrypt(data, DEFAULT_KEY);
 	}
 
-	public static String encrypt(String data, String key) throws Exception {
-		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-		int blockSize = cipher.getBlockSize();
-		byte[] dataBytes = data.getBytes();
-		int length = dataBytes.length;
-		if (length % blockSize != 0) {
-			length = length + (blockSize - (length % blockSize));
+	public static String encrypt(String data, String key) {
+		try {
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+			int blockSize = cipher.getBlockSize();
+			byte[] dataBytes = data.getBytes();
+			int length = dataBytes.length;
+			if (length % blockSize != 0) {
+				length = length + (blockSize - (length % blockSize));
+			}
+			byte[] plaintext = new byte[length];
+			System.arraycopy(dataBytes, 0, plaintext, 0, dataBytes.length);
+			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(), ALGORITHM));
+			return parseByteToHexString(cipher.doFinal(plaintext));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		byte[] plaintext = new byte[length];
-		System.arraycopy(dataBytes, 0, plaintext, 0, dataBytes.length);
-		cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key.getBytes(), ALGORITHM));
-		return parseByteToHexString(cipher.doFinal(plaintext));
 	}
 
-	public static String decrypt(String data, String key) throws Exception {
-		Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-		cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(), ALGORITHM));
-		return new String(cipher.doFinal(parseHexStringToByte(data)));
+	public static String decrypt(String data, String key) {
+		try {
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key.getBytes(), ALGORITHM));
+			return new String(cipher.doFinal(parseHexStringToByte(data)));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private static String parseByteToHexString(byte[] buf) {
