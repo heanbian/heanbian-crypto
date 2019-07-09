@@ -15,9 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @since 1.0
  * @version 1.0
  */
-public class HCryptTemplate {
-
-	public static final HCryptTemplate INSTANCE = new HCryptTemplate();
+public final class HCryptTemplate {
 
 	/**
 	 * 算法：AES
@@ -49,7 +47,7 @@ public class HCryptTemplate {
 	 * @return 密文
 	 * @throws Exception 异常
 	 */
-	public String encrypt(String plaintext) throws Exception {
+	public static String encrypt(String plaintext) throws Exception {
 		return encrypt(plaintext, DEFAULT_KEY);
 	}
 
@@ -61,7 +59,7 @@ public class HCryptTemplate {
 	 * @return 密文
 	 * @throws Exception 异常
 	 */
-	public String encrypt(String plaintext, String secretKey) throws Exception {
+	public static String encrypt(String plaintext, String secretKey) throws Exception {
 		return encrypt(plaintext, secretKey, DEFAULT_IV);
 	}
 
@@ -74,7 +72,7 @@ public class HCryptTemplate {
 	 * @return 密文
 	 * @throws Exception 异常
 	 */
-	public String encrypt(String plaintext, String secretKey, String iv) throws Exception {
+	public static String encrypt(String plaintext, String secretKey, String iv) throws Exception {
 		Objects.requireNonNull(plaintext, "plaintext must not be null");
 		Objects.requireNonNull(secretKey, "secretKey must not be null");
 		Objects.requireNonNull(iv, "iv must not be null");
@@ -92,7 +90,7 @@ public class HCryptTemplate {
 	 * @return 明文
 	 * @throws Exception 异常
 	 */
-	public String decrypt(String ciphertext) throws Exception {
+	public static String decrypt(String ciphertext) throws Exception {
 		return decrypt(ciphertext, DEFAULT_KEY);
 	}
 
@@ -104,7 +102,7 @@ public class HCryptTemplate {
 	 * @return 明文
 	 * @throws Exception 异常
 	 */
-	public String decrypt(String ciphertext, String secretKey) throws Exception {
+	public static String decrypt(String ciphertext, String secretKey) throws Exception {
 		return decrypt(ciphertext, secretKey, DEFAULT_IV);
 	}
 
@@ -117,7 +115,7 @@ public class HCryptTemplate {
 	 * @return 明文
 	 * @throws Exception 异常
 	 */
-	public String decrypt(String ciphertext, String secretKey, String iv) throws Exception {
+	public static String decrypt(String ciphertext, String secretKey, String iv) throws Exception {
 		Objects.requireNonNull(ciphertext, "ciphertext must not be null");
 		Objects.requireNonNull(secretKey, "secretKey must not be null");
 		Objects.requireNonNull(iv, "iv must not be null");
