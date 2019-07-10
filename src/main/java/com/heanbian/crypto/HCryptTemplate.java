@@ -9,7 +9,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * 加密解密类
+ * 加密解密模板类
  * 
  * @author 河岸边
  * @since 1.0
@@ -23,17 +23,17 @@ public final class HCryptTemplate {
 	private static final String ALGORITHM = "AES";
 
 	/**
-	 * 向量：1234567890abcdef
+	 * 默认向量
 	 */
 	private static final String DEFAULT_IV = "1234567890abcdef";
 
 	/**
-	 * 默认密钥：1234567890abcdef
+	 * 默认密钥
 	 */
 	private static final String DEFAULT_KEY = "1234567890abcdef";
 
 	/**
-	 * AES/CBC/PKCS5Padding
+	 * 填充方式
 	 */
 	private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
 
