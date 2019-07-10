@@ -20,7 +20,7 @@ public final class HSimpleCryptTemplate {
 	private static final String ALGORITHM = "AES";
 
 	/**
-	 * 默认密钥，切勿修改
+	 * 默认密钥
 	 */
 	private static final String DEFAULT_KEY = "gfdertfghjkuyrtg";
 

@@ -37,8 +37,7 @@ public final class HCryptTemplate {
 	 */
 	private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
 
-	private HCryptTemplate() {
-	}
+	private HCryptTemplate() {}
 
 	/**
 	 * 加密，使用默认{@link #DEFAULT_KEY}
