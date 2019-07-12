@@ -4,20 +4,19 @@
 1.pom.xml
 ```
 <dependencies>
-	<dependency>
-		<groupId>com.heanbian</groupId>
-		<artifactId>heanbian-crypto</artifactId>
-		<version>${version}</version>
-	</dependency>
+ <dependency>
+  <groupId>com.heanbian</groupId>
+  <artifactId>heanbian-crypto</artifactId>
+  <version>4.0.8</version>
+ </dependency>
 </dependencies>
 ```
 
-2.Example
+2.Examples
 ``` 
-HCryptTemplate tmp = HCryptTemplate.INSTANCE;
 String text = "123456abc";
-String ciphertext = tmp.encrypt(text);
-String plaintext = tmp.decrypt(ciphertext);
+String ciphertext = HCryptTemplate.encrypt(text);
+String plaintext = HCryptTemplate.decrypt(ciphertext);
 System.out.println("加密：" + ciphertext);
 System.out.println("解密：" + plaintext);
 ```
