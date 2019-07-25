@@ -1,4 +1,4 @@
-package com.heanbian.crypto;
+package com.heanbian.block.reactive.crypto;
 
 import java.util.Objects;
 
@@ -8,11 +8,10 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * 加密解密简单模板类
  * 
- * @author 马洪
- * @since 1.0
+ * @author Heanbian
  * @version 1.0
  */
-public final class HSimpleCryptTemplate {
+public final class SimpleCryptTemplate {
 
 	/**
 	 * 算法
@@ -29,7 +28,7 @@ public final class HSimpleCryptTemplate {
 	 */
 	private static final String TRANSFORMATION = "AES/ECB/NoPadding";
 
-	private HSimpleCryptTemplate() {}
+	private SimpleCryptTemplate() {}
 
 	/**
 	 * 加密，使用默认密钥{@link #DEFAULT_KEY}

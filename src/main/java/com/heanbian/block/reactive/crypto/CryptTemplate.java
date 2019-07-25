@@ -1,4 +1,4 @@
-package com.heanbian.crypto;
+package com.heanbian.block.reactive.crypto;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -11,11 +11,10 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * 加密解密模板类
  * 
- * @author 河岸边
- * @since 1.0
- * @version 1.0
+ * @author Heanbian
+ * @version 5.0
  */
-public final class HCryptTemplate {
+public final class CryptTemplate {
 
 	/**
 	 * 算法：AES
@@ -37,7 +36,7 @@ public final class HCryptTemplate {
 	 */
 	private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
 
-	private HCryptTemplate() {}
+	private CryptTemplate() {}
 
 	/**
 	 * 加密，使用默认{@link #DEFAULT_KEY}
