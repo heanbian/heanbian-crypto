@@ -6,7 +6,7 @@
 
 	<groupId>com.heanbian</groupId>
 	<artifactId>heanbian-crypto</artifactId>
-	<version>5.0.1</version>
+	<version>11.0.0</version>
 	<packaging>jar</packaging>
 
 	<parent>
