@@ -1,12 +1,15 @@
 package com.heanbian.block.reactive.crypto;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Security;
 import java.util.Base64;
 import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  * 加密解密模板类
@@ -15,6 +18,10 @@ import javax.crypto.spec.SecretKeySpec;
  * @version 5.0
  */
 public final class CryptTemplate {
+
+	static {
+		Security.addProvider(new BouncyCastleProvider());
+	}
 
 	/**
 	 * 算法：AES
@@ -34,7 +41,7 @@ public final class CryptTemplate {
 	/**
 	 * 填充方式
 	 */
-	private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
+	private static final String TRANSFORMATION = "AES/CBC/PKCS7Padding";
 
 	private CryptTemplate() {}
 
