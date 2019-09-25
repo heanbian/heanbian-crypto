@@ -1,6 +1,5 @@
-package com.heanbian.block.reactive.crypto;
+package com.heanbian.block.crypto;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import java.util.Base64;
 import java.util.Objects;
@@ -15,13 +14,14 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  * 加密解密模板类
  * 
  * @author Heanbian
- * @version 5.0
  */
 public final class CryptTemplate {
 
 	static {
 		Security.addProvider(new BouncyCastleProvider());
 	}
+	
+	private CryptTemplate() {}
 
 	/**
 	 * 算法：AES
@@ -42,8 +42,6 @@ public final class CryptTemplate {
 	 * 填充方式
 	 */
 	private static final String TRANSFORMATION = "AES/CBC/PKCS7Padding";
-
-	private CryptTemplate() {}
 
 	/**
 	 * 加密，使用默认{@link #DEFAULT_KEY}
@@ -79,11 +77,26 @@ public final class CryptTemplate {
 		Objects.requireNonNull(secretKey, "secretKey must not be null");
 		Objects.requireNonNull(iv, "iv must not be null");
 
+		return encrypt(plaintext.getBytes(), secretKey.getBytes(), iv.getBytes());
+	}
+
+	/**
+	 * 加密
+	 * 
+	 * @param plaintext 明文
+	 * @param secretKey 密钥，长度16位
+	 * @param iv        向量，长度16位
+	 * @return 密文
+	 */
+	public static String encrypt(byte[] plaintext, byte[] secretKey, byte[] iv) {
+		Objects.requireNonNull(plaintext, "plaintext must not be null");
+		Objects.requireNonNull(secretKey, "secretKey must not be null");
+		Objects.requireNonNull(iv, "iv must not be null");
+
 		try {
 			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
-					new IvParameterSpec(iv.getBytes()));
-			return Base64.getEncoder().encodeToString(cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8)));
+			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(secretKey, ALGORITHM), new IvParameterSpec(iv));
+			return Base64.getEncoder().encodeToString(cipher.doFinal(plaintext));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -123,12 +136,26 @@ public final class CryptTemplate {
 		Objects.requireNonNull(secretKey, "secretKey must not be null");
 		Objects.requireNonNull(iv, "iv must not be null");
 
+		return decrypt(Base64.getDecoder().decode(ciphertext), secretKey.getBytes(), iv.getBytes());
+	}
+
+	/**
+	 * 解密
+	 * 
+	 * @param ciphertext 密文
+	 * @param secretKey  密钥，长度16位
+	 * @param iv         向量，长度16位
+	 * @return 明文
+	 */
+	public static String decrypt(byte[] ciphertext, byte[] secretKey, byte[] iv) {
+		Objects.requireNonNull(ciphertext, "ciphertext must not be null");
+		Objects.requireNonNull(secretKey, "secretKey must not be null");
+		Objects.requireNonNull(iv, "iv must not be null");
+
 		try {
 			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM),
-					new IvParameterSpec(iv.getBytes()));
-			return new String(cipher.doFinal(Base64.getDecoder().decode(ciphertext.replaceAll(" ", "+"))),
-					StandardCharsets.UTF_8);
+			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(secretKey, ALGORITHM), new IvParameterSpec(iv));
+			return new String(cipher.doFinal(ciphertext));
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
