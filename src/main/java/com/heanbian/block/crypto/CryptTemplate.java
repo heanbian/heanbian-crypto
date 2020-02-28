@@ -1,8 +1,9 @@
 package com.heanbian.block.crypto;
 
+import static java.util.Objects.requireNonNull;
+
 import java.security.Security;
 import java.util.Base64;
-import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -20,8 +21,9 @@ public final class CryptTemplate {
 	static {
 		Security.addProvider(new BouncyCastleProvider());
 	}
-	
-	private CryptTemplate() {}
+
+	private CryptTemplate() {
+	}
 
 	/**
 	 * 算法：AES
@@ -73,9 +75,9 @@ public final class CryptTemplate {
 	 * @return 密文
 	 */
 	public static String encrypt(String plaintext, String secretKey, String iv) {
-		Objects.requireNonNull(plaintext, "plaintext must not be null");
-		Objects.requireNonNull(secretKey, "secretKey must not be null");
-		Objects.requireNonNull(iv, "iv must not be null");
+		requireNonNull(plaintext, "plaintext must not be null");
+		requireNonNull(secretKey, "secretKey must not be null");
+		requireNonNull(iv, "iv must not be null");
 
 		return encrypt(plaintext.getBytes(), secretKey.getBytes(), iv.getBytes());
 	}
@@ -89,9 +91,9 @@ public final class CryptTemplate {
 	 * @return 密文
 	 */
 	public static String encrypt(byte[] plaintext, byte[] secretKey, byte[] iv) {
-		Objects.requireNonNull(plaintext, "plaintext must not be null");
-		Objects.requireNonNull(secretKey, "secretKey must not be null");
-		Objects.requireNonNull(iv, "iv must not be null");
+		requireNonNull(plaintext, "plaintext must not be null");
+		requireNonNull(secretKey, "secretKey must not be null");
+		requireNonNull(iv, "iv must not be null");
 
 		try {
 			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
@@ -132,9 +134,9 @@ public final class CryptTemplate {
 	 * @return 明文
 	 */
 	public static String decrypt(String ciphertext, String secretKey, String iv) {
-		Objects.requireNonNull(ciphertext, "ciphertext must not be null");
-		Objects.requireNonNull(secretKey, "secretKey must not be null");
-		Objects.requireNonNull(iv, "iv must not be null");
+		requireNonNull(ciphertext, "ciphertext must not be null");
+		requireNonNull(secretKey, "secretKey must not be null");
+		requireNonNull(iv, "iv must not be null");
 
 		return decrypt(Base64.getDecoder().decode(ciphertext), secretKey.getBytes(), iv.getBytes());
 	}
@@ -148,9 +150,9 @@ public final class CryptTemplate {
 	 * @return 明文
 	 */
 	public static String decrypt(byte[] ciphertext, byte[] secretKey, byte[] iv) {
-		Objects.requireNonNull(ciphertext, "ciphertext must not be null");
-		Objects.requireNonNull(secretKey, "secretKey must not be null");
-		Objects.requireNonNull(iv, "iv must not be null");
+		requireNonNull(ciphertext, "ciphertext must not be null");
+		requireNonNull(secretKey, "secretKey must not be null");
+		requireNonNull(iv, "iv must not be null");
 
 		try {
 			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
