@@ -7,7 +7,7 @@
 <dependency>
 	<groupId>com.heanbian</groupId>
 	<artifactId>heanbian-crypto</artifactId>
-	<version>11.0.2</version>
+	<version>11.2.0</version>
 </dependency>
 
 ```
