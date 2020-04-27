@@ -12,17 +12,17 @@ import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
- * 加密解密模板类
+ * AES加解密
  * 
- * @author Heanbian
+ * @author 马洪
  */
-public final class CryptTemplate {
+public final class AesTemplate {
 
 	static {
 		Security.addProvider(new BouncyCastleProvider());
 	}
 
-	private CryptTemplate() {
+	private AesTemplate() {
 	}
 
 	/**
