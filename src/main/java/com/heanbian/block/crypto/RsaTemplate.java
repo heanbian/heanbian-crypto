@@ -9,11 +9,14 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  * RSA加解密
@@ -23,10 +26,14 @@ import javax.crypto.Cipher;
  */
 public final class RsaTemplate {
 
-	private static final String ALG = "RSA";
+	static {
+		Security.addProvider(new BouncyCastleProvider());
+	}
 
 	private RsaTemplate() {
 	}
+
+	private static final String ALG = "RSA";
 
 	public static KeyPair getKeyPair() {
 		KeyPairGenerator k;
