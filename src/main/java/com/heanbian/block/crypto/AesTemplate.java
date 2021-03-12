@@ -14,7 +14,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 /**
  * AES加解密
  * 
- * @author 马洪
+ * @author Heanbian
  */
 public final class AesTemplate {
 

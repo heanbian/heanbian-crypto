@@ -21,7 +21,7 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 /**
  * RSA加解密
  * 
- * @author 马洪
+ * @author Heanbian
  *
  */
 public final class RsaTemplate {
