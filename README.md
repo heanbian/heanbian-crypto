@@ -12,7 +12,7 @@ JDK11+
 <dependency>
 	<groupId>com.heanbian.block</groupId>
 	<artifactId>heanbian-crypto</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 </dependency>
 ```
 
@@ -23,5 +23,7 @@ JDK11+
 
 > RsaTemplate
 
+> EcTemplate
 
-说明：支持RSA、AES加解密静态工具类。
+
+说明：支持ECC、RSA、AES。

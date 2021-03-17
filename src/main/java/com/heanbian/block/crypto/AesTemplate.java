@@ -1,13 +1,14 @@
 package com.heanbian.block.crypto;
 
+import java.nio.charset.Charset;
 import java.security.Security;
-import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.util.encoders.UrlBase64;
 
 public class AesTemplate {
 
@@ -36,7 +37,7 @@ public class AesTemplate {
 	}
 
 	public String decrypt(String text) {
-		return decrypt(Base64.getDecoder().decode(text), this.key.getBytes(), this.iv.getBytes());
+		return decrypt(UrlBase64.decode(text), this.key.getBytes(), this.iv.getBytes());
 	}
 
 	String encrypt(byte[] text, byte[] key, byte[] iv) {
@@ -44,7 +45,7 @@ public class AesTemplate {
 		try {
 			cipher = Cipher.getInstance(this.pad);
 			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, this.alg), new IvParameterSpec(iv));
-			return Base64.getEncoder().encodeToString(cipher.doFinal(text));
+			return new String(UrlBase64.encode(cipher.doFinal(text)), Charset.defaultCharset());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -55,7 +56,7 @@ public class AesTemplate {
 		try {
 			cipher = Cipher.getInstance(this.pad);
 			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, this.alg), new IvParameterSpec(iv));
-			return new String(cipher.doFinal(text));
+			return new String(cipher.doFinal(text), Charset.defaultCharset());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
