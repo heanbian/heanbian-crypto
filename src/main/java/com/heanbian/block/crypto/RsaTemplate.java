@@ -1,41 +1,35 @@
 package com.heanbian.block.crypto;
 
-import static java.util.Objects.requireNonNull;
-
 import java.nio.charset.Charset;
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Security;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-/**
- * RSA加解密
- * 
- * @author Heanbian
- *
- */
-public final class RsaTemplate {
+public class RsaTemplate {
 
 	static {
 		Security.addProvider(new BouncyCastleProvider());
 	}
 
-	private RsaTemplate() {
+	static final String ALG = "RSA";
+	private PublicKey publicKey;
+	private PrivateKey privateKey;
+
+	public RsaTemplate() {
+		KeyPair keyPair = getKeyPair();
+		this.publicKey = keyPair.getPublic();
+		this.privateKey = keyPair.getPrivate();
 	}
 
-	private static final String ALG = "RSA";
-
-	public static KeyPair getKeyPair() {
+	KeyPair getKeyPair() {
 		KeyPairGenerator k;
 		try {
 			k = KeyPairGenerator.getInstance(ALG);
@@ -46,52 +40,11 @@ public final class RsaTemplate {
 		}
 	}
 
-	public static String getPublicKey(KeyPair keyPair) {
-		requireNonNull(keyPair, "keyPair must not be null");
-		return Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded());
-	}
-
-	public static String getPrivateKey(KeyPair keyPair) {
-		requireNonNull(keyPair, "keyPair must not be null");
-		return Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded());
-	}
-
-	public static PublicKey getPublicKey(String encodedPublicKey) {
-		requireNonNull(encodedPublicKey, "encodedPublicKey must not be null");
-
-		byte[] encodedKey = Base64.getDecoder().decode(encodedPublicKey);
-		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKey);
-		KeyFactory factory;
-		try {
-			factory = KeyFactory.getInstance(ALG);
-			return factory.generatePublic(keySpec);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static PrivateKey getPrivateKey(String encodedPrivateKey) {
-		requireNonNull(encodedPrivateKey, "encodedPrivateKey must not be null");
-
-		byte[] encodedKey = Base64.getDecoder().decode(encodedPrivateKey);
-		PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encodedKey);
-		KeyFactory factory;
-		try {
-			factory = KeyFactory.getInstance(ALG);
-			return factory.generatePrivate(keySpec);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static String encrypt(String content, PublicKey publicKey) {
-		requireNonNull(content, "content must not be null");
-		requireNonNull(publicKey, "publicKey must not be null");
-
+	public String encrypt(String content) {
 		Cipher cipher;
 		try {
 			cipher = Cipher.getInstance(ALG);
-			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+			cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
 			byte[] encoded = cipher.doFinal(content.getBytes(Charset.defaultCharset()));
 			return Base64.getEncoder().encodeToString(encoded);
 		} catch (Exception e) {
@@ -99,14 +52,11 @@ public final class RsaTemplate {
 		}
 	}
 
-	public static String decrypt(String content, PrivateKey privateKey) {
-		requireNonNull(content, "content must not be null");
-		requireNonNull(privateKey, "privateKey must not be null");
-
+	public String decrypt(String content) {
 		Cipher cipher;
 		try {
 			cipher = Cipher.getInstance(ALG);
-			cipher.init(Cipher.DECRYPT_MODE, privateKey);
+			cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
 			byte[] decoded = cipher.doFinal(Base64.getDecoder().decode(content));
 			return new String(decoded, Charset.defaultCharset());
 		} catch (Exception e) {
