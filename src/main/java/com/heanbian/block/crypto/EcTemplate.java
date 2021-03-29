@@ -2,6 +2,7 @@ package com.heanbian.block.crypto;
 
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -11,6 +12,9 @@ import java.security.spec.ECFieldFp;
 import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPoint;
 import java.security.spec.EllipticCurve;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.NullCipher;
@@ -75,6 +79,38 @@ public class EcTemplate {
 			cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
 			byte[] decoded = cipher.doFinal(UrlBase64.decode(content));
 			return new String(decoded, Charset.defaultCharset());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public String getPublicKey() {
+		return Base64.getEncoder().encodeToString(this.publicKey.getEncoded());
+	}
+
+	public String getPrivateKey() {
+		return Base64.getEncoder().encodeToString(this.privateKey.getEncoded());
+	}
+
+	public PublicKey getPublicKey(String publicKey) {
+		byte[] encodedKey = Base64.getDecoder().decode(publicKey);
+		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKey);
+		KeyFactory factory;
+		try {
+			factory = KeyFactory.getInstance(ALG);
+			return factory.generatePublic(keySpec);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public PrivateKey getPrivateKey(String privateKey) {
+		byte[] encodedKey = Base64.getDecoder().decode(privateKey);
+		PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encodedKey);
+		KeyFactory factory;
+		try {
+			factory = KeyFactory.getInstance(ALG);
+			return factory.generatePrivate(keySpec);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
