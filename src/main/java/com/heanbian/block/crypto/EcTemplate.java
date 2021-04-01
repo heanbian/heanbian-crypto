@@ -14,7 +14,6 @@ import java.security.spec.ECPoint;
 import java.security.spec.EllipticCurve;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.NullCipher;
@@ -85,15 +84,15 @@ public class EcTemplate {
 	}
 
 	public String getPublicKey() {
-		return Base64.getEncoder().encodeToString(this.publicKey.getEncoded());
+		return new String(UrlBase64.encode(this.publicKey.getEncoded()), Charset.defaultCharset());
 	}
 
 	public String getPrivateKey() {
-		return Base64.getEncoder().encodeToString(this.privateKey.getEncoded());
+		return new String(UrlBase64.encode(this.privateKey.getEncoded()), Charset.defaultCharset());
 	}
 
 	public PublicKey getPublicKey(String publicKey) {
-		byte[] encodedKey = Base64.getDecoder().decode(publicKey);
+		byte[] encodedKey = UrlBase64.decode(publicKey);
 		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKey);
 		KeyFactory factory;
 		try {
@@ -105,7 +104,7 @@ public class EcTemplate {
 	}
 
 	public PrivateKey getPrivateKey(String privateKey) {
-		byte[] encodedKey = Base64.getDecoder().decode(privateKey);
+		byte[] encodedKey = UrlBase64.decode(privateKey);
 		PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encodedKey);
 		KeyFactory factory;
 		try {
