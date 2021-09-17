@@ -2,7 +2,7 @@
 
 ## 前提条件
 
-JDK11+
+JDK 17
 
 ## pom.xml
 
@@ -12,7 +12,7 @@ JDK11+
 <dependency>
   <groupId>com.heanbian.block</groupId>
   <artifactId>heanbian-crypto</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
 </dependency>
 ```
 
