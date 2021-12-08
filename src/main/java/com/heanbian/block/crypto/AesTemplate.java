@@ -56,7 +56,7 @@ public class AesTemplate {
 		try {
 			cipher = Cipher.getInstance(this.pad);
 			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, this.alg), new IvParameterSpec(iv));
-			return new String(cipher.doFinal(text), Charset.defaultCharset());
+			return new String(cipher.doFinal(text), Charset.defaultCharset()).strip();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
