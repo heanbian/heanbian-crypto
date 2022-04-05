@@ -10,9 +10,9 @@ JDK 17
 
 ```
 <dependency>
-  <groupId>com.heanbian.block</groupId>
+  <groupId>com.heanbian</groupId>
   <artifactId>heanbian-crypto</artifactId>
-  <version>1.0.6</version>
+  <version>1.0.0.0</version>
 </dependency>
 ```
 
