@@ -6,7 +6,7 @@
 
 	<groupId>com.heanbian</groupId>
 	<artifactId>heanbian-crypto</artifactId>
-	<version>1.0.0.0</version>
+	<version>10</version>
 	<packaging>jar</packaging>
 
 	<name>heanbian-crypto</name>
@@ -60,7 +60,7 @@
 		</repository>
 	</repositories>
 
-	<profiles>
+		<profiles>
 		<profile>
 			<id>sonatype-oss-release</id>
 			<build>
@@ -91,7 +91,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.3.2</version>
+						<version>3.4.1</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>
@@ -125,7 +125,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.1.0</version>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -133,7 +133,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>3.0.0-M5</version>
+					<version>3.0.0-M7</version>
 					<configuration>
 						<mavenExecutorId>forked-path</mavenExecutorId>
 						<useReleaseProfile>false</useReleaseProfile>
