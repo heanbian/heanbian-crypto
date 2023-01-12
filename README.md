@@ -12,7 +12,7 @@ JDK 17
 <dependency>
   <groupId>com.heanbian</groupId>
   <artifactId>heanbian-crypto</artifactId>
-  <version>11</version>
+  <version>13.1</version>
 </dependency>
 ```
 
