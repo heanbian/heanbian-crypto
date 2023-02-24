@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
 	<groupId>com.heanbian</groupId>
 	<artifactId>heanbian-crypto</artifactId>
-	<version>13.3</version>
+	<version>13.4</version>
 	<packaging>jar</packaging>
-
 	<name>heanbian-crypto</name>
 	<url>https://github.com/heanbian/heanbian-crypto</url>
 	<description>heanbian-crypto</description>
 	<inceptionYear>2019</inceptionYear>
-
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
@@ -19,7 +16,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-
 	<developers>
 		<developer>
 			<id>heanbian</id>
@@ -32,18 +28,15 @@
 			</roles>
 		</developer>
 	</developers>
-
 	<scm>
 		<connection>scm:git:https://github.com/heanbian/heanbian-crypto.git</connection>
 		<developerConnection>scm:git:https://github.com/heanbian/heanbian-crypto.git</developerConnection>
 		<url>https://github.com/heanbian/heanbian-crypto</url>
 	</scm>
-
 	<issueManagement>
 		<system>Github</system>
 		<url>https://github.com/heanbian/heanbian-crypto/issues</url>
 	</issueManagement>
-
 	<repositories>
 		<repository>
 			<id>sonatype-nexus-snapshots</id>
@@ -57,7 +50,6 @@
 			</snapshots>
 		</repository>
 	</repositories>
-
 	<profiles>
 		<profile>
 			<id>sonatype-oss-release</id>
@@ -89,7 +81,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.4.1</version>
+						<version>3.5.0</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>
@@ -117,13 +109,12 @@
 			</build>
 		</profile>
 	</profiles>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.1</version>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -141,7 +132,6 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
 	<distributionManagement>
 		<snapshotRepository>
 			<id>sonatype-nexus-snapshots</id>
@@ -154,11 +144,9 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
