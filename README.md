@@ -12,7 +12,7 @@ JDK 17
 <dependency>
   <groupId>com.heanbian</groupId>
   <artifactId>heanbian-crypto</artifactId>
-  <version>15.1</version>
+  <version>16.1</version>
 </dependency>
 ```
 
@@ -25,5 +25,7 @@ JDK 17
 
 > EcTemplate
 
+> SM4Template
 
-说明：支持ECC、RSA、AES。
+
+说明：支持ECC、RSA、AES、SM4。
