@@ -1,0 +1,11 @@
+
+.classpath
+.factorypath
+.project
+*.prefs
+*.yml
+*.class
+*.ico
+*.MF
+/target/*
+/.settings/*
