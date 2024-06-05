@@ -9,3 +9,4 @@
 *.MF
 /target/*
 /.settings/*
+.DS_Store
