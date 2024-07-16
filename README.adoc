@@ -24,5 +24,14 @@ JDK 21
 *  EcTemplate
 *  SM4Template
 
+----
+AesTemplate aesTemplate = new AesTemplate("AES", "1234567890abcdef", "1234567890abcdef", "AES/CBC/PKCS7Padding");
+
+String text = "zhang3";
+
+String encryptedText = aesTemplate.encrypt(text);
+String decryptedText = aesTemplate.decrypt(encryptedText);
+
+----
 
 说明：支持ECC、RSA、AES、SM4。
