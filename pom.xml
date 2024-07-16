@@ -26,14 +26,14 @@
 			<organization>heanbian.com</organization>
 			<organizationUrl>https://heanbian.com</organizationUrl>
 			<roles>
-				<role>developer</role>
+				<role>Developer</role>
+				<role>Maintainer</role>
 			</roles>
 		</developer>
 	</developers>
 	<scm>
 		<connection>scm:git:https://github.com/heanbian/heanbian-crypto.git</connection>
-		<developerConnection>
-			scm:git:https://github.com/heanbian/heanbian-crypto.git</developerConnection>
+		<developerConnection>scm:git:https://github.com/heanbian/heanbian-crypto.git</developerConnection>
 		<url>https://github.com/heanbian/heanbian-crypto</url>
 	</scm>
 	<issueManagement>
