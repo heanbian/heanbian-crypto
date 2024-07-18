@@ -6,13 +6,13 @@ JDK 21
 
 == pom.xml
 
-具体版本，可以从 https://repo1.maven.org/maven2/com/heanbian/heanbian-crypto/[Maven Central]获得
+具体版本，可以从 https://repo1.maven.org/maven2/com/heanbian/heanbian-crypto/[Maven Central] 查询
 
 ----
 <dependency>
   <groupId>com.heanbian</groupId>
   <artifactId>heanbian-crypto</artifactId>
-  <version>21.1</version>
+  <version>21.2</version>
 </dependency>
 ----
 
