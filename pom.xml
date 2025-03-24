@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.heanbian</groupId>
 	<artifactId>heanbian-crypto</artifactId>
-	<version>21.2</version>
+	<version>21.3</version>
 	<packaging>jar</packaging>
 	<name>heanbian-crypto</name>
 	<url>https://github.com/heanbian/heanbian-crypto</url>
@@ -61,7 +61,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.13.0</version>
+						<version>3.14.0</version>
 						<configuration>
 							<encoding>UTF-8</encoding>
 							<source>21</source>
@@ -84,7 +84,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.7.0</version>
+						<version>3.11.2</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>
@@ -97,7 +97,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.2.4</version>
+						<version>3.2.7</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -136,7 +136,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.1.1</version>
 					<configuration>
 						<mavenExecutorId>forked-path</mavenExecutorId>
 						<useReleaseProfile>false</useReleaseProfile>
@@ -160,7 +160,7 @@
 	</distributionManagement>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<bcprov-jdk18on.version>1.78.1</bcprov-jdk18on.version>
+		<bcprov-jdk18on.version>1.80</bcprov-jdk18on.version>
 	</properties>
 	<dependencies>
 		<dependency>

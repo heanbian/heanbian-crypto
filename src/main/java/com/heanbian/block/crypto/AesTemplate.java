@@ -1,14 +1,14 @@
 package com.heanbian.block.crypto;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.Security;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.util.encoders.UrlBase64;
 
 public class AesTemplate {
 
@@ -16,49 +16,51 @@ public class AesTemplate {
 		Security.addProvider(new BouncyCastleProvider());
 	}
 
-	private String alg;
-	private String iv;
-	private String key;
-	private String pad;
+	private static final String DEFAULT_ALGORITHM = "AES";
+	private static final String DEFAULT_PADDING = "AES/CBC/PKCS7Padding";
+	private static final int KEY_LENGTH_BYTES = 16; // AES-128 requires a 16-byte key
+	private static final int IV_LENGTH_BYTES = 16; // CBC mode requires a 16-byte IV
+
+	private final String padding;
+	private final SecretKeySpec secretKeySpec;
+	private final IvParameterSpec ivParameterSpec;
 
 	public AesTemplate() {
-		this("AES", "1234567890abcdef", "1234567890abcdef", "AES/CBC/PKCS7Padding");
+		this(DEFAULT_ALGORITHM, "1234567890abcdef", "1234567890abcdef", DEFAULT_PADDING);
 	}
 
-	public AesTemplate(String alg, String iv, String key, String pad) {
-		this.alg = alg;
-		this.iv = iv;
-		this.key = key;
-		this.pad = pad;
+	public AesTemplate(String alg, String key, String iv, String pad) {
+		if (key == null || key.getBytes(StandardCharsets.UTF_8).length != KEY_LENGTH_BYTES) {
+			throw new IllegalArgumentException("Key must be 16 bytes for AES-128");
+		}
+		if (iv == null || iv.getBytes(StandardCharsets.UTF_8).length != IV_LENGTH_BYTES) {
+			throw new IllegalArgumentException("IV must be 16 bytes for AES-CBC");
+		}
+
+		this.padding = pad;
+		this.secretKeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), alg);
+		this.ivParameterSpec = new IvParameterSpec(iv.getBytes(StandardCharsets.UTF_8));
 	}
 
 	public String encrypt(String text) {
-		return encrypt(text.getBytes(), this.key.getBytes(), this.iv.getBytes());
-	}
-
-	public String decrypt(String text) {
-		return decrypt(UrlBase64.decode(text), this.key.getBytes(), this.iv.getBytes());
-	}
-
-	String encrypt(byte[] text, byte[] key, byte[] iv) {
-		Cipher cipher;
 		try {
-			cipher = Cipher.getInstance(this.pad);
-			cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, this.alg), new IvParameterSpec(iv));
-			return new String(UrlBase64.encode(cipher.doFinal(text)), Charset.defaultCharset());
+			Cipher cipher = Cipher.getInstance(padding);
+			cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
+			byte[] encryptedBytes = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8));
+			return Base64.getUrlEncoder().encodeToString(encryptedBytes);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Encryption failed", e);
 		}
 	}
 
-	String decrypt(byte[] text, byte[] key, byte[] iv) {
-		Cipher cipher;
+	public String decrypt(String encryptedText) {
 		try {
-			cipher = Cipher.getInstance(this.pad);
-			cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, this.alg), new IvParameterSpec(iv));
-			return new String(cipher.doFinal(text), Charset.defaultCharset()).strip();
+			Cipher cipher = Cipher.getInstance(padding);
+			cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+			byte[] decryptedBytes = cipher.doFinal(Base64.getUrlDecoder().decode(encryptedText));
+			return new String(decryptedBytes, StandardCharsets.UTF_8).strip();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Decryption failed", e);
 		}
 	}
 
