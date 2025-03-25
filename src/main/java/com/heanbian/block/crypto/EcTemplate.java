@@ -1,19 +1,19 @@
 package com.heanbian.block.crypto;
 
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
+import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.security.Security;
-import java.security.spec.ECFieldFp;
-import java.security.spec.ECParameterSpec;
-import java.security.spec.ECPoint;
-import java.security.spec.EllipticCurve;
+import java.security.spec.ECGenParameterSpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
@@ -25,91 +25,112 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 public class EcTemplate {
 
 	static {
-		Security.addProvider(new BouncyCastleProvider());
+		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+			Security.addProvider(new BouncyCastleProvider());
+		}
 	}
 
 	private static final String ALGORITHM = "EC";
-	private static final String TRANSFORMATION = "ECIES"; // 使用 ECIES 作为推荐的加密模式
+	private static final String STANDARD_CURVE_NAME = "secp256r1"; // NIST P-256曲线标准名称
+	private static final String TRANSFORMATION = "ECIES"; // 加密方案
 
-	private PublicKey publicKey;
-	private PrivateKey privateKey;
+	private final PublicKey publicKey;
+	private final PrivateKey privateKey;
 
 	public EcTemplate() {
-		KeyPair keyPair = generateKeyPair();
+		KeyPair keyPair = generateKeyPair(STANDARD_CURVE_NAME);
 		this.publicKey = keyPair.getPublic();
 		this.privateKey = keyPair.getPrivate();
 	}
 
-	private KeyPair generateKeyPair() {
-		try {
-			EllipticCurve ellipticCurve = new EllipticCurve(
-					new ECFieldFp(new BigInteger("FFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF", 16)),
-					new BigInteger("FFFFFFFF00000001000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFC", 16),
-					new BigInteger("5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B", 16));
-			ECPoint ecPoint = new ECPoint(
-					new BigInteger("6B17D1F2E12C4247F8BCE6E563A440F277037D812DEB33A0F4A13945D898C296", 16),
-					new BigInteger("4FE342E2FE1A7F9B8EE7EB4A7C0F9E162BCE33576B315ECECBB6406837BF51F5", 16));
-			ECParameterSpec ecParameterSpec = new ECParameterSpec(ellipticCurve, ecPoint,
-					new BigInteger("FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551", 16), 1);
+	public EcTemplate(PublicKey publicKey, PrivateKey privateKey) {
+		this.publicKey = validateKey(publicKey, PublicKey.class);
+		this.privateKey = validateKey(privateKey, PrivateKey.class);
+	}
 
-			KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM);
-			keyPairGenerator.initialize(ecParameterSpec);
-			return keyPairGenerator.generateKeyPair();
-		} catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
-			throw new RuntimeException("Failed to generate EC key pair", e);
+	private KeyPair generateKeyPair(String curveName) {
+		try {
+			KeyPairGenerator generator = KeyPairGenerator.getInstance(ALGORITHM);
+			ECGenParameterSpec ecSpec = new ECGenParameterSpec(curveName);
+			generator.initialize(ecSpec, new SecureRandom());
+			return generator.generateKeyPair();
+		} catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException e) {
+			throw new RuntimeException("密钥对生成失败", e);
 		}
 	}
 
-	public String encrypt(String content) {
+	public String encrypt(String plaintext) {
+		validateInput(plaintext, "加密内容");
 		try {
-			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-			cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
-			byte[] encryptedBytes = cipher.doFinal(content.getBytes(StandardCharsets.UTF_8));
-			return Base64.getUrlEncoder().encodeToString(encryptedBytes);
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION, BouncyCastleProvider.PROVIDER_NAME);
+			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+			byte[] cipherText = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
+			return Base64.getUrlEncoder().encodeToString(cipherText);
 		} catch (Exception e) {
-			throw new RuntimeException("Encryption failed", e);
+			throw new RuntimeException("加密失败", e);
 		}
 	}
 
-	public String decrypt(String encryptedContent) {
+	public String decrypt(String ciphertext) {
+		validateInput(ciphertext, "密文");
 		try {
-			Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-			cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
-			byte[] decryptedBytes = cipher.doFinal(Base64.getUrlDecoder().decode(encryptedContent));
-			return new String(decryptedBytes, StandardCharsets.UTF_8).strip();
+			Cipher cipher = Cipher.getInstance(TRANSFORMATION, BouncyCastleProvider.PROVIDER_NAME);
+			cipher.init(Cipher.DECRYPT_MODE, privateKey);
+			byte[] decoded = Base64.getUrlDecoder().decode(ciphertext);
+			byte[] decrypted = cipher.doFinal(decoded);
+			return new String(decrypted, StandardCharsets.UTF_8);
 		} catch (Exception e) {
-			throw new RuntimeException("Decryption failed", e);
+			throw new RuntimeException("解密失败", e);
 		}
 	}
 
 	public String getPublicKeyString() {
-		return Base64.getUrlEncoder().encodeToString(this.publicKey.getEncoded());
+		return Base64.getUrlEncoder().encodeToString(publicKey.getEncoded());
 	}
 
 	public String getPrivateKeyString() {
-		return Base64.getUrlEncoder().encodeToString(this.privateKey.getEncoded());
+		return Base64.getUrlEncoder().encodeToString(privateKey.getEncoded());
 	}
 
-	public PublicKey loadPublicKey(String publicKeyString) {
+	public static PublicKey deserializePublicKey(String base64Key) {
+		return (PublicKey) deserializeKey(base64Key, X509EncodedKeySpec.class, PublicKey.class);
+	}
+
+	public static PrivateKey deserializePrivateKey(String base64Key) {
+		return (PrivateKey) deserializeKey(base64Key, PKCS8EncodedKeySpec.class, PrivateKey.class);
+	}
+
+	private static Key deserializeKey(String base64Key, Class<? extends KeySpec> keySpecType,
+			Class<? extends Key> keyType) {
+		validateInput(base64Key, "Base64密钥字符串");
 		try {
-			byte[] encodedKey = Base64.getUrlDecoder().decode(publicKeyString);
-			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKey);
+			byte[] encoded = Base64.getUrlDecoder().decode(base64Key);
 			KeyFactory factory = KeyFactory.getInstance(ALGORITHM);
-			return factory.generatePublic(keySpec);
-		} catch (Exception e) {
-			throw new RuntimeException("Failed to load public key", e);
+
+			KeySpec spec = keySpecType == X509EncodedKeySpec.class ? //
+					new X509EncodedKeySpec(encoded)//
+					: new PKCS8EncodedKeySpec(encoded);
+
+			return keyType == PublicKey.class ? factory.generatePublic(spec) : factory.generatePrivate(spec);
+		} catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+			throw new RuntimeException("密钥反序列化失败", e);
 		}
 	}
 
-	public PrivateKey loadPrivateKey(String privateKeyString) {
-		try {
-			byte[] encodedKey = Base64.getUrlDecoder().decode(privateKeyString);
-			PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encodedKey);
-			KeyFactory factory = KeyFactory.getInstance(ALGORITHM);
-			return factory.generatePrivate(keySpec);
-		} catch (Exception e) {
-			throw new RuntimeException("Failed to load private key", e);
+	private static void validateInput(String input, String paramName) {
+		if (input == null || input.isEmpty()) {
+			throw new IllegalArgumentException(paramName + "不能为空");
 		}
+	}
+
+	private <T extends Key> T validateKey(T key, Class<T> keyType) {
+		if (key == null) {
+			throw new IllegalArgumentException(keyType.getSimpleName() + "不能为空");
+		}
+		if (!key.getAlgorithm().equals(ALGORITHM)) {
+			throw new IllegalArgumentException("不支持的密钥算法类型");
+		}
+		return key;
 	}
 
 }

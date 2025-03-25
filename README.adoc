@@ -12,7 +12,7 @@ JDK 21
 <dependency>
   <groupId>com.heanbian</groupId>
   <artifactId>heanbian-crypto</artifactId>
-  <version>21.3</version>
+  <version>21.4</version>
 </dependency>
 ----
 
@@ -20,18 +20,64 @@ JDK 21
 
 
 *  AesTemplate
-*  RsaTemplate
+
+----
+AesTemplate aes = new AesTemplate();
+
+// 加密
+String ciphertext = aes.encrypt("hello world");
+System.out.println("Encrypted: " + ciphertext);
+
+// 解密
+String plaintext = aes.decrypt(ciphertext);
+// 输出 hello world
+System.out.println("Decrypted: " + plaintext); 
+
+----
 *  EcTemplate
+
+----
+EcTemplate ec = new EcTemplate();
+
+// 加密
+String ciphertext = ec.encrypt("hello world");
+System.out.println("Encrypted: " + ciphertext);
+
+// 解密
+String plaintext = ec.decrypt(ciphertext);
+// 输出 hello world
+System.out.println("Decrypted: " + plaintext);
+
+----
+*  RsaTemplate
+
+----
+RsaTemplate rsa = new RsaTemplate();
+
+// 加密
+String ciphertext = rsa.encrypt("hello world");
+System.out.println("Encrypted: " + ciphertext);
+
+// 解密
+String plaintext = rsa.decrypt(ciphertext);
+// 输出 hello world
+System.out.println("Decrypted: " + plaintext); 
+
+----
 *  SM4Template
 
 ----
-AesTemplate aesTemplate = new AesTemplate("AES", "1234567890abcdef", "1234567890abcdef", "AES/CBC/PKCS7Padding");
+SM4Template sm4 = new SM4Template();
 
-String text = "zhang3";
+// 加密
+String ciphertext = sm4.encrypt("hello world");
+System.out.println("Encrypted: " + ciphertext);
 
-String encryptedText = aesTemplate.encrypt(text);
-String decryptedText = aesTemplate.decrypt(encryptedText);
+// 解密
+String plaintext = sm4.decrypt(ciphertext);
+// 输出 hello world
+System.out.println("Decrypted: " + plaintext); 
 
 ----
 
-说明：支持ECC、RSA、AES、SM4。
+说明：支持EC、RSA、AES、SM4。

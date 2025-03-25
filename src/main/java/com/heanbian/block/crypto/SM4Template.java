@@ -2,19 +2,23 @@ package com.heanbian.block.crypto;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.Security;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.util.Arrays;
 import java.util.Base64;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class SM4Template {
 
 	static {
-		Security.addProvider(new BouncyCastleProvider());
+		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+			Security.addProvider(new BouncyCastleProvider());
+		}
 	}
 
 	public static final String DEFAULT_KEY = "0123456789abcdef";
@@ -39,7 +43,7 @@ public class SM4Template {
 
 			return Base64.getUrlEncoder().encodeToString(combined);
 		} catch (Exception e) {
-			throw new RuntimeException("Encryption failed: " + e.getMessage(), e);
+			throw new RuntimeException("加密失败", e);
 		}
 	}
 
@@ -60,15 +64,14 @@ public class SM4Template {
 			byte[] decryptedText = cipher.doFinal(ivAndData[1]);
 			return new String(decryptedText, StandardCharsets.UTF_8);
 		} catch (Exception e) {
-			throw new RuntimeException("Decryption failed: " + e.getMessage(), e);
+			throw new RuntimeException("解密失败", e);
 		}
 	}
 
 	private SecretKeySpec generateKeySpec(String key) {
 		byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
 		if (keyBytes.length != KEY_SIZE) {
-			throw new IllegalArgumentException(
-					"Invalid SM4 key length (" + keyBytes.length + " bytes). Key must be " + KEY_SIZE + " bytes.");
+			throw new IllegalArgumentException("无效数据");
 		}
 		return new SecretKeySpec(keyBytes, "SM4");
 	}
@@ -80,16 +83,16 @@ public class SM4Template {
 	}
 
 	private byte[] combineIvAndData(byte[] iv, byte[] data) throws Exception {
-		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-			outputStream.write(iv);
-			outputStream.write(data);
-			return outputStream.toByteArray();
+		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+			out.write(iv);
+			out.write(data);
+			return out.toByteArray();
 		}
 	}
 
 	private byte[][] splitIvAndData(byte[] combined) {
 		if (combined.length < IV_SIZE) {
-			throw new IllegalArgumentException("Invalid encrypted data format");
+			throw new IllegalArgumentException("无效数据");
 		}
 		return new byte[][] { //
 				Arrays.copyOfRange(combined, 0, IV_SIZE), //

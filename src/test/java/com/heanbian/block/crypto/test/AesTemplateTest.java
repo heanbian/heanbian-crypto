@@ -3,7 +3,7 @@ package com.heanbian.block.crypto.test;
 import com.heanbian.block.crypto.AesTemplate;
 
 public class AesTemplateTest {
-	
+
 	public static void main(String[] args) {
 		AesTemplate aes = new AesTemplate();
 
@@ -13,7 +13,8 @@ public class AesTemplateTest {
 
 		// 解密
 		String plaintext = aes.decrypt(ciphertext);
-		System.out.println("Decrypted: " + plaintext); // 输出 hello world
+		// 输出 hello world
+		System.out.println("Decrypted: " + plaintext);
 	}
 
 }

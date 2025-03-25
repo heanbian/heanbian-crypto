@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Objects;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -25,14 +26,10 @@ public class LargeAesTemplate {
 	}
 
 	public LargeAesTemplate(String base64Key) {
-		this.base64Key = base64Key;
+		this.base64Key = Objects.requireNonNull(base64Key, "base64Key不能为空");
 	}
 
 	public SecretKey initKey() {
-		if (base64Key == null) {
-			throw new RuntimeException("base64Key 不能为空");
-		}
-
 		byte[] decodedKey = Base64.getUrlDecoder().decode(base64Key);
 		return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
 	}

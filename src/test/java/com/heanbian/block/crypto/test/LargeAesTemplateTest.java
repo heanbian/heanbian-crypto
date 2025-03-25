@@ -13,7 +13,8 @@ public class LargeAesTemplateTest {
 
 		// 解密
 		String plaintext = aes.decrypt(ciphertext);
-		System.out.println("Decrypted: " + plaintext); // 输出 hello world
+		// 输出 hello world
+		System.out.println("Decrypted: " + plaintext); 
 	}
 
 }
