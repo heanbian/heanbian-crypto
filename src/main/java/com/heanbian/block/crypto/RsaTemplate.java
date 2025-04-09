@@ -16,7 +16,7 @@ import javax.crypto.Cipher;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-public class RsaTemplate {
+public final class RsaTemplate {
 
 	static {
 		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {

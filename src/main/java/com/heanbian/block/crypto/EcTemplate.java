@@ -22,7 +22,7 @@ import javax.crypto.Cipher;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-public class EcTemplate {
+public final class EcTemplate {
 
 	static {
 		if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {

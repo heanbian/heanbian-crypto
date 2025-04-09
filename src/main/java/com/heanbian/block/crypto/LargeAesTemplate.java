@@ -12,7 +12,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class LargeAesTemplate {
+public final class LargeAesTemplate {
 
 	private static final String ALGORITHM = "AES/GCM/NoPadding";
 	private static final int TAG_LENGTH_BIT = 128; // GCM 认证标签长度
