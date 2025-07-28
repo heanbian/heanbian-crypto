@@ -3,21 +3,31 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>com.heanbian</groupId>
 	<artifactId>heanbian-crypto</artifactId>
-	<version>21.6</version>
+	<version>2025.1</version>
 	<packaging>jar</packaging>
+
 	<name>heanbian-crypto</name>
 	<url>https://github.com/heanbian/heanbian-crypto</url>
 	<description>heanbian-crypto</description>
 	<inceptionYear>2019</inceptionYear>
+
+	<organization>
+		<name>Heanbian</name>
+		<url>https://heanbian.com</url>
+	</organization>
+
 	<licenses>
 		<license>
 			<name>The Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
+			<comments>OSI Approved License</comments>
 		</license>
 	</licenses>
+
 	<developers>
 		<developer>
 			<id>heanbian</id>
@@ -31,47 +41,53 @@
 			</roles>
 		</developer>
 	</developers>
+
 	<scm>
 		<connection>scm:git:https://github.com/heanbian/heanbian-crypto.git</connection>
-		<developerConnection>scm:git:https://github.com/heanbian/heanbian-crypto.git</developerConnection>
+		<developerConnection>
+			scm:git:https://github.com/heanbian/heanbian-crypto.git</developerConnection>
 		<url>https://github.com/heanbian/heanbian-crypto</url>
+		<tag>HEAD</tag>
 	</scm>
+
 	<issueManagement>
-		<system>Github</system>
+		<system>GitHub Issues</system>
 		<url>https://github.com/heanbian/heanbian-crypto/issues</url>
 	</issueManagement>
-	<repositories>
-		<repository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>21</java.version>
+		<maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+		<maven.source.plugin.version>3.3.1</maven.source.plugin.version>
+		<maven.javadoc.plugin.version>3.11.2</maven.javadoc.plugin.version>
+		<maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
+		<central.publishing.plugin.version>0.8.0</central.publishing.plugin.version>
+		<maven.release.plugin.version>3.1.0</maven.release.plugin.version>
+		<maven.source.forceCreation>true</maven.source.forceCreation>
+		<maven.javadoc.forceCreation>true</maven.javadoc.forceCreation>
+		<bcprov-jdk18on.version>1.81</bcprov-jdk18on.version>
+	</properties>
+
 	<profiles>
 		<profile>
-			<id>sonatype-oss-release</id>
+			<id>sonatype-central-release</id>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.14.0</version>
+						<version>${maven.compiler.plugin.version}</version>
 						<configuration>
-							<encoding>UTF-8</encoding>
-							<source>21</source>
-							<target>21</target>
+							<encoding>${project.build.sourceEncoding}</encoding>
+							<source>${java.version}</source>
+							<target>${java.version}</target>
 						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>3.3.1</version>
+						<version>${maven.source.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
@@ -84,7 +100,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.11.2</version>
+						<version>${maven.javadoc.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>attach-javadocs</id>
@@ -97,7 +113,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.2.7</version>
+						<version>${maven.gpg.plugin.version}</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -107,61 +123,114 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+							<keyname>${gpg.keyname}</keyname>
+							<passphrase>${gpg.passphrase}</passphrase>
+							<gpgArguments>
+								<arg>--batch</arg>
+								<arg>--yes</arg>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
 		</profile>
 	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.5.0</version>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.7.0</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven.source.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>${maven.gpg.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<keyname>${gpg.keyname}</keyname>
+					<passphrase>${gpg.passphrase}</passphrase>
+					<gpgArguments>
+						<arg>--batch</arg>
+						<arg>--yes</arg>
+						<arg>--pinentry-mode</arg>
+						<arg>loopback</arg>
+					</gpgArguments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>${central.publishing.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<serverId>sonatype-nexus-staging</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<publishingServerId>sonatype-central-release</publishingServerId>
+					<autoPublish>true</autoPublish>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven.release.plugin.version}</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<tagNameFormat>@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>3.1.1</version>
-					<configuration>
-						<mavenExecutorId>forked-path</mavenExecutorId>
-						<useReleaseProfile>false</useReleaseProfile>
-						<arguments>${arguments} -Psonatype-oss-release</arguments>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
+
 	<distributionManagement>
-		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
 		<repository>
-			<id>sonatype-nexus-staging</id>
+			<id>sonatype-central-release</id>
 			<name>Nexus Release Repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<url>https://central.sonatype.com/api/v1/publishing</url>
 		</repository>
 	</distributionManagement>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<bcprov-jdk18on.version>1.81</bcprov-jdk18on.version>
-	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
