@@ -1,6 +1,6 @@
-package com.heanbian.block.crypto.test;
+package com.heanbian.crypto.test;
 
-import com.heanbian.block.crypto.AesTemplate;
+import com.heanbian.crypto.AesTemplate;
 
 public class AesTemplateTest {
 

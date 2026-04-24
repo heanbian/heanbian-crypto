@@ -1,6 +1,6 @@
-package com.heanbian.block.crypto.test;
+package com.heanbian.crypto.test;
 
-import com.heanbian.block.crypto.EcTemplate;
+import com.heanbian.crypto.EcTemplate;
 
 public class EcTemplateTest {
 

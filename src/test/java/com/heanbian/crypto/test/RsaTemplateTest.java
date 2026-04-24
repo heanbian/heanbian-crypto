@@ -1,6 +1,6 @@
-package com.heanbian.block.crypto.test;
+package com.heanbian.crypto.test;
 
-import com.heanbian.block.crypto.RsaTemplate;
+import com.heanbian.crypto.RsaTemplate;
 
 public class RsaTemplateTest {
 

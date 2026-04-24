@@ -1,6 +1,6 @@
-package com.heanbian.block.crypto.test;
+package com.heanbian.crypto.test;
 
-import com.heanbian.block.crypto.SM4Template;
+import com.heanbian.crypto.SM4Template;
 
 public class SM4TemplateTest {
 
